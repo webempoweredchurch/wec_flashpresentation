@@ -30,7 +30,7 @@
 /** 
  * Audio presentation class for the 'wec_flashpresentation' extension.
  * 
- * @author		Web Empowered Church Team <flashflashpresentation@webempoweredchurch.org>
+ * @author		Web-Empowered Church Team <flashpresentation@webempoweredchurch.org>
  */
 
 require_once(PATH_site.'typo3conf/ext/wec_flashpresentation/class.tx_wecflashpresentation.php');
@@ -39,28 +39,14 @@ require_once(PATH_site.'typo3conf/ext/wec_flashpresentation/class.tx_wecflashpre
  * Audio presentation class for the 'wec_flashpresentation' extension.
  * Class is a simple shell that extends parent class and calls all functions from it.
  *
- * @author		Web Empowered Church Team <flashflashpresentation@webempoweredchurch.org>
+ * @author		Web-Empowered Church Team <flashpresentation@webempoweredchurch.org>
  * @package		TYPO3
  * @subpackage	tx_wecflashpresentation
  */
 class tx_wecflashpresentation_pi2 extends tx_wecflashpresentation {
 	var $prefixId = "tx_wecflashpresentation_pi2";		// Same as class name
 	var $scriptRelPath = "pi2/class.tx_wecflashpresentation_pi2.php";	// Path to this script relative to the extension dir.
-	
-	/*
-	function outputHTML($flashPath="typo3conf/ext/wec_flashpresentation/fla/mp3_chart_final.swf", $width=440, $height=420, $bgcolor="FFFFFF", $flashVars) {
-				$output = '<embed src="'.$flashPath.'" ' .
-								'flashvars="'.$flashVars.'" ' .
-								'width="'.$width.'" ' .
-								'height="'.$height.'" ' .
-								'bgcolor="'.$bgcolor.'" ' .
-								'quality="high"  ' .
-								'pluginspage="http://www.macromedia.com/go/getflashplayer" ' .
-								'type="application/x-shockwave-flash">';
-				return $output;
-	}
-	*/	
-	
+		
 }
 
 

@@ -29,7 +29,7 @@
 /** 
  * Top level class for the 'wec_flashpresentation' extension.
  *
- * @author		Web Empowered Church Team <flashflashpresentation@webempoweredchurch.org>
+ * @author		Web-Empowered Church Team <flashpresentation@webempoweredchurch.org>
  */
 
 
@@ -39,7 +39,7 @@ require_once(PATH_tslib."class.tslib_pibase.php");
  * Top level class for the 'wec_flashpresentation' extension. Subclasses
  * in pi1 and pi2 are shells that call all functions in parent class.
  *
- * @author		Web Empowered Church Team <flashflashpresentation@webempoweredchurch.org>
+ * @author		Web-Empowered Church Team <flashpresentation@webempoweredchurch.org>
  * @package		TYPO3
  * @subpackage	tx_wecflashpresentation
  */
@@ -73,8 +73,6 @@ class tx_wecflashpresentation extends tslib_pibase {
 			}
 		}
 		
-		debug($flashConf);
-		
 		$width = $flashConf['width'];
 		$height = $flashConf['height'];
 		$bgcolor = $flashConf['bgcolor'];
@@ -86,24 +84,25 @@ class tx_wecflashpresentation extends tslib_pibase {
 		unset($flashConf['bgcolor']);
 		unset($flashConf['flashPath']);
 		
-		
-		foreach($piFlexForm['data'] as $sheet => $data) {
-			foreach ($data as $lang => $value) {
-				foreach ($value as $key => $val) {
-					/* Skip over the slides field.  We'll perform special processing on this later */
-					if ($key != "slides") {
-						$val = $this->pi_getFFvalue($piFlexForm, $key, $sheet);
-						/* If value exists in Flexform, overwrite existing Typoscript value or create new array entry */
-						if ($val != null) {
-							$flashConf[$key] = $val;
+		if($piFlexForm['data']) {
+			foreach($piFlexForm['data'] as $sheet => $data) {
+				foreach ($data as $lang => $value) {
+					foreach ($value as $key => $val) {
+						/* Skip over the slides field.  We'll perform special processing on this later */
+						if ($key != "slides") {
+							$val = $this->pi_getFFvalue($piFlexForm, $key, $sheet);
+							/* If value exists in Flexform, overwrite existing Typoscript value or create new array entry */
+							if ($val != null) {
+								$flashConf[$key] = $val;
 							
-							/* If bandwidth image comes from Flexform, set bwbase to uploads folder */
-							if ($key == "bwbase") {
-								$flashConf['bwbase'] = "uploads/tx_wecflashpresentation/";
-							}
+								/* If bandwidth image comes from Flexform, set bwbase to uploads folder */
+								if ($key == "bwbase") {
+									$flashConf['bwbase'] = "uploads/tx_wecflashpresentation/";
+								}
 			
-						}
-					}	
+							}
+						}	
+					}
 				}
 			}
 		}
