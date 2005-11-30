@@ -10,7 +10,7 @@
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = Array (
-	'title' => 'Flash Presentation',
+	'title' => 'WEC Flash Presentation',
 	'description' => 'Flash-based player for displaying synchronized media and presentation slides.',
 	'category' => 'plugin',
 	'author' => 'Web Empowered Church Team',
