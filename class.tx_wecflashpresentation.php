@@ -89,7 +89,7 @@ class tx_wecflashpresentation extends tslib_pibase {
 				foreach ($data as $lang => $value) {
 					foreach ($value as $key => $val) {
 						/* Skip over the slides field.  We'll perform special processing on this later */
-						if ($key != "slides") {
+						//if ($key != "slides") {
 							$val = $this->pi_getFFvalue($piFlexForm, $key, $sheet);
 							/* If value exists in Flexform, overwrite existing Typoscript value or create new array entry */
 							if ($val != null) {
@@ -101,15 +101,18 @@ class tx_wecflashpresentation extends tslib_pibase {
 								}
 			
 							}
-						}	
+						//}	
 					}
 				}
 			}
 		}
 		
+		$slidesAndTimes = $this->splitSlidesAndTimes($flashConf['slides']);
+		unset($flashConf['slides']);
+		
 		$flashVars = $this->implode_assoc("=", "&", $flashConf)."&".
-						 $this->splitSlidesAndTimes($this->pi_getFFvalue($piFlexForm, "slides", "slides"))."&".
-						 "baseurl=".t3lib_div::getIndpEnv('TYPO3_SITE_URL')."&lastLoaded=true";
+						 $slidesAndTimes."&".
+						 "baseurl=".t3lib_div::getIndpEnv('TYPO3_SITE_URL')."&lastloaded=true";
 		
 		
 		return $this->pi_wrapInBaseClass($this->outputHTML($flashPath, $width, $height, $bgcolor, $flashVars));
@@ -175,6 +178,8 @@ class tx_wecflashpresentation extends tslib_pibase {
 		$timeStr = "slideTimes=";
 		
 		foreach ( $slideArray as $slide ) {
+			
+			$slide = trim($slide);
 			$splitArray = explode(" ", $slide);
 			
 			/* Either slide images or timings are missing */
