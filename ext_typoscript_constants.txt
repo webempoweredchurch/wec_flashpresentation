@@ -1,5 +1,5 @@
 ###
-# This are the default TS-constants for tt_news
+# This are the default TS-constants for wec_flashpresentation.
 ##
 
 plugin.tx_wecflashpresentation_pi1 {
@@ -24,6 +24,9 @@ plugin.tx_wecflashpresentation_pi1 {
   
   # cat=plugin.tx_wecflashpresentation_pi1/video/7; type=text; label=Label for high bandwidth version.
   radioLabelHigh = High (Broadband)
+
+  # cat=plugin.tx_wecflashpresentation_pi1/video/8; type=boolean; label=Swap the default slide and video location, placing video on the left and slides on the rigt.
+  swapUI = 0
 }
 
 plugin.tx_wecflashpresentation_pi2 {
