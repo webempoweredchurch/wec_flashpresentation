@@ -27,7 +27,7 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
+		<languageKey index="nl" type="array">
 			<label index="pi1_title" type="integer">184020865</label>
 			<label index="pi2_title" type="integer">124748276</label>
 			<label index="pi1_plus_wiz_description" type="integer">193647402</label>
@@ -35,7 +35,11 @@
 		</languageKey>
 	</orig_hash>
 	<orig_text type="array">
-		<languageKey index="default" type="array">
+		<languageKey index="nl" type="array">
+			<label index="pi1_title">Flash Presentation - Video</label>
+			<label index="pi2_title">Flash Presentation - Audio</label>
+			<label index="pi1_plus_wiz_description">Flash-based slide presentation with synchronized video track</label>
+			<label index="pi2_plus_wiz_description">Flash-based slide presentation with synchronized audio track</label>
 		</languageKey>
 	</orig_text>
 </T3locallang>

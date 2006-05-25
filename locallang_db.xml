@@ -120,7 +120,7 @@
 		</languageKey>
 	</data>
 	<orig_hash type="array">
-		<languageKey index="default" type="array">
+		<languageKey index="nl" type="array">
 			<label index="tt_content.list_type_pi1" type="integer">184020865</label>
 			<label index="tt_content.list_type_pi2" type="integer">124748276</label>
 			<label index="tt_content.pi1_plus_wiz_description" type="integer">103426699</label>
@@ -159,7 +159,42 @@
 		</languageKey>
 	</orig_hash>
 	<orig_text type="array">
-		<languageKey index="default" type="array">
+		<languageKey index="nl" type="array">
+			<label index="tt_content.list_type_pi1">Flash Presentation - Video</label>
+			<label index="tt_content.list_type_pi2">Flash Presentation - Audio</label>
+			<label index="tt_content.pi1_plus_wiz_description">Flash-based presentation with synchronized video track</label>
+			<label index="tt_content.pi2_plus_wiz_description">Flash-based presentation with synchronized audio track</label>
+			<label index="tt_content.pi_flexform.video_sheet">Video Settings</label>
+			<label index="tt_content.pi_flexform.audio_sheet">Audio Settings</label>
+			<label index="tt_content.pi_flexform.slides_sheet">Slides Images and Timings</label>
+			<label index="tt_content.pi_flexform.optional_sheet">Optional Settings</label>
+			<label index="tt_content.pi_flexform.classtitle">Class/Video Title</label>
+			<label index="tt_content.pi_flexform.intromessage">Intro Message</label>
+			<label index="tt_content.pi_flexform.textcolor">Text color</label>
+			<label index="tt_content.pi_flexform.videobase">Base URL for Video</label>
+			<label index="tt_content.pi_flexform.imagesbase">Base URL for Images</label>
+			<label index="tt_content.pi_flexform.bwbase">Base URL for Bandwidth Checker Image</label>
+			<label index="tt_content.pi_flexform.bwimage">Bandwidth Checker Image</label>
+			<label index="tt_content.pi_flexform.bgbase">Base URL for Background Image</label>
+			<label index="tt_content.pi_flexform.bgimage">Background Image</label>
+			<label index="tt_content.pi_flexform.videolow">Low Bandwidth Video</label>
+			<label index="tt_content.pi_flexform.videohigh">High Bandwidth Video</label>
+			<label index="tt_content.pi_flexform.audiofile">Audio File</label>
+			<label index="tt_content.pi_flexform.radioLabelLow">Low Bandwidth Button Label</label>
+			<label index="tt_content.pi_flexform.radioLabelHigh">High Bandwidth Button Label</label>
+			<label index="tt_content.pi_flexform.videolowEC">Encode Bitrate for Low Bandwidth Video</label>
+			<label index="tt_content.pi_flexform.videohighEC">Encode Bitrate for High Bandwidth Video</label>
+			<label index="tt_content.pi_flexform.audioEC">Encode Bitrate for Audio</label>
+			<label index="tt_content.pi_flexform.radioPauseTime">Pause Time to Select Radio Buttons</label>
+			<label index="tt_content.pi_flexform.slides">Slide Images and Timings</label>
+			<label index="wizard.title">Slide Images and Timings</label>
+			<label index="wizard.slide_up">Move Slide Up</label>
+			<label index="wizard.slide_down">Move Slide Down</label>
+			<label index="wizard.slide_top">Move Slide to Top</label>
+			<label index="wizard.slide_bottom">Move Slide to Bottom</label>
+			<label index="wizard.slide_add">Add New Slide</label>
+			<label index="wizard.slide_remove">Remove Slide</label>
+			<label index="wizard.forms_refresh">Refresh Slides</label>
 		</languageKey>
 	</orig_text>
 </T3locallang>
