@@ -2,7 +2,7 @@
 /***************************************************************
 * Copyright notice
 *
-* (c) 2005 Foundation for Evangelism
+* (c) 2006 Foundation for Evangelism
 * All rights reserved
 *
 * This file is part of the Web-Empowered Church (WEC)
@@ -33,7 +33,7 @@
  */
 
 
-require_once(PATH_tslib."class.tslib_pibase.php");
+require_once(PATH_tslib.'class.tslib_pibase.php');
 
 /** 
  * Top level class for the 'wec_flashpresentation' extension. Subclasses
@@ -44,9 +44,9 @@ require_once(PATH_tslib."class.tslib_pibase.php");
  * @subpackage	tx_wecflashpresentation
  */
 class tx_wecflashpresentation extends tslib_pibase {
-	var $prefixId = "tx_wecflashpresentation";		// Same as class name
-	var $scriptRelPath = "class.tx_wecflashpresentation.php";	// Path to this script relative to the extension dir.
-	var $extKey = "wec_flashpresentation";	// The extension key.
+	var $prefixId = 'tx_wecflashpresentation';		// Same as class name
+	var $scriptRelPath = 'class.tx_wecflashpresentation.php';	// Path to this script relative to the extension dir.
+	var $extKey = 'wec_flashpresentation';	// The extension key.
 	
 	/**
 	 * Main function for the class that passes handling to the pi1 or pi2 function.
@@ -55,7 +55,7 @@ class tx_wecflashpresentation extends tslib_pibase {
 	 * @return	string	HTML output of extension.
 	 */
 	function main($content,$conf)	{
-		
+		/* Standard Initialization */
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
@@ -73,17 +73,19 @@ class tx_wecflashpresentation extends tslib_pibase {
 			}
 		}
 		
+		/* Pull special values out of flashconf and into own variables.  We don't want do pass these along as FlashVars */
 		$width = $flashConf['width'];
 		$height = $flashConf['height'];
 		$bgcolor = $flashConf['bgcolor'];
 		$flashPath = $flashConf['flashPath'];
 		
-		unset($flashConf['userFunc']);  // Remove userFunc from the array b/c we do not want to pass it along to Flash
+		unset($flashConf['userFunc']);
 		unset($flashConf['width']);
 		unset($flashConf['height']);
 		unset($flashConf['bgcolor']);
 		unset($flashConf['flashPath']);
 		
+		/* Combine FlexForm and TS values */
 		if($piFlexForm['data']) {
 			foreach($piFlexForm['data'] as $sheet => $data) {
 				foreach ($data as $lang => $value) {
@@ -106,13 +108,33 @@ class tx_wecflashpresentation extends tslib_pibase {
 				}
 			}
 		}
-		
-		$slidesAndTimes = $this->splitSlidesAndTimes($flashConf['slides']);
+				
+		$flashConf = array_merge($flashConf, $this->splitSlidesAndTimes($flashConf['slides']));
 		unset($flashConf['slides']);
 		
-		$flashVars = $this->implode_assoc("=", "&", $flashConf)."&".
-						 $slidesAndTimes."&".
-						 "baseurl=".t3lib_div::getIndpEnv('TYPO3_SITE_URL')."&lastloaded=true";
+		$flashConf['baseurl'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		$flashConf['lastloaded'] = "true";
+		
+		/* Initialize values for FlashObject */
+		$jsPath = t3lib_extmgm::siteRelPath($this->extKey).'res/';
+		$name = 'wec_flashpresentation_'.$this->cObj->data['uid'];
+		$version = '7';
+
+		/* Create FlashObject class */		
+		$flashObjectClassName = t3lib_div::makeInstanceClassName('tx_wecflashpresentation_flashobject');
+		$flashObject = new $flashObjectClassName($flashPath, $name, $width, $height, $version, $bgcolor, $jsPath);				
+		
+		/* Add each FlashVar to FlashObject */
+		foreach($flashConf as $var => $value) {
+			$flashObject->addVariable($var, $value);	
+		}
+		$flashObject->write($name);
+		
+		/* Create the output */
+		$html = '<div id="'.$name.'">You do not have the Flash plugin installed, or your browser does not support Javascript (you should enable it, perhaps?)</div>';
+		$javascript = $flashObject->output();	
+
+		return $this->pi_wrapInBaseClass($html.chr(10).$javascript);
 		
 		
 		return $this->pi_wrapInBaseClass($this->outputHTML($flashPath, $width, $height, $bgcolor, $flashVars));
@@ -139,43 +161,18 @@ class tx_wecflashpresentation extends tslib_pibase {
 	}
 	
 	/*
-	 * Outputs HTML to embed Flash file and parameters.
-	 *
-	 * @param	string	Relative or absolute path to the Flash SWF to be loaded.
-	 * @param	string	Width of the Flash SWF.
-	 * @param	string	Height of the Flash SWF.
-	 * @param	string	Background color of the Flash SWF.
-	 * @param	string	Parameters passed to Flash SWF via FlashVars.
-	 * @param	string	HTML to embed a Flash SWF with specified parameters.
-	 */
-	function outputHTML($flashPath, $width=760, $height=400, $bgcolor="FFFFFF", $flashVars) {
-		$output = '<embed src="'.$flashPath.'" ' .
-						'flashvars="'.$flashVars.'" ' .
-						'width="'.$width.'" ' .
-						'height="'.$height.'" ' .
-						'bgcolor="'.$bgcolor.'" ' .
-						'quality="high"  ' .
-						'pluginspage="http://www.macromedia.com/go/getflashplayer" ' .
-						'type="application/x-shockwave-flash"></embed>';
-		return $output;	
-	}
-	
-	/*
 	 * Reads a string-based slide image/timing pair and splits the values into two
 	 * concatenated strings: one for slide images and one for slide timings.
 	 *
 	 * @param	string	Slide image and timing pairs.  Images and timing are separated
-	 *							"|" and pairs are separated by a newline.
+	 *					"|" and pairs are separated by a newline.
 	 *	@return	string	Returns a concatenated string with images and timings separated.
 	 */  
-	function splitSlidesandTimes($slides) {
+	function splitSlidesAndTimes($slides) {
 		$slideArray = explode(chr(10), $slides);
 		$imageArray = array();
 		$timingArray = array();
 		$prevTime = 0;
-		
-		$slideStr = "slideImages=";
-		$timeStr = "slideTimes=";
 		
 		foreach ( $slideArray as $slide ) {
 			
@@ -199,7 +196,7 @@ class tx_wecflashpresentation extends tslib_pibase {
 			}
 		}
 		
-		return trim($slideStr,",").'&'.trim($timeStr, ",");
+		return array('slideImages' => $slideStr, 'slideTimes' => $timeStr);
 	}
 	
 	/*
