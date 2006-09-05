@@ -34,7 +34,7 @@
 
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
-require_once('class.tx_wecflashpresentation_flashobject.php');
+require_once(t3lib_extMgm::extPath('wec_flashpresentation').'class.tx_wecflashpresentation_flashobject.php');
 
 
 /** 
