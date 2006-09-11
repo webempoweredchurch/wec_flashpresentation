@@ -198,6 +198,10 @@ class tx_wecflashpresentation extends tslib_pibase {
 			}
 		}
 		
+		/* Trim trailing quotes from the end of the strings */
+		$slideStr = trim($slideStr, ',');
+		$timeStr = trim($timeStr, ',');
+		
 		return array('slideImages' => $slideStr, 'slideTimes' => $timeStr);
 	}
 	
