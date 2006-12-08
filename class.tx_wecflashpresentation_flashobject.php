@@ -64,7 +64,7 @@ class tx_wecflashpresentation_flashobject {
 		$this->flashObjectVariables =array();
 		$this->flashObjectPath = $flashObjectPath;
 		
-		$this->flashObject = "var fo = new FlashObject('".$flashMoviePath."', 'flash', '".$width."', '".$height."', '8', '".$bgcolor."');";
+		$this->flashObject = "var fo = new FlashObject('".$flashMoviePath."', 'flash', '".$width."', '".$height."', '8', '".$bgColor."');";
 	}
 	
 	/*
@@ -90,7 +90,7 @@ class tx_wecflashpresentation_flashobject {
 	 */
 	function output() {
 		
-		$GLOBALS['TSFE']->additionalHeaderData[] = '<script type="text/javascript" src="'.$this->flashObjectPath.'swfobject.js"></script>';		
+		$GLOBALS['TSFE']->additionalHeaderData['tx_wecflashpresentation_flashobject'] = '<script type="text/javascript" src="'.$this->flashObjectPath.'swfobject.js"></script>';		
 				
 		$output .= $this->flashObject.chr(10);
 		$output .= implode(chr(10), $this->flashObjectVariables).chr(10);
