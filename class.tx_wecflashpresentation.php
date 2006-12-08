@@ -114,7 +114,9 @@ class tx_wecflashpresentation extends tslib_pibase {
 		$flashConf = array_merge($flashConf, $this->splitSlidesAndTimes($flashConf['slides']));
 		unset($flashConf['slides']);
 		
-		$flashConf['baseurl'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		if(!$flashConf['baseurl']) {
+			$flashConf['baseurl'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+		}
 		$flashConf['lastloaded'] = "true";
 		
 		/* Initialize values for FlashObject */
