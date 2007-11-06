@@ -73,7 +73,7 @@ class tx_wecflashpresentation_flashobject {
 	 * @param	string	The value of the variable.
 	 */
 	function addVariable($var, $value) {
-		$this->flashObjectVariables[] = "fo.addVariable('".t3lib_div::slashJS($var)."', '".t3lib_div::slashJS($value)."');";		
+		$this->flashObjectVariables[] = "fo.addVariable(escape('".addslashes($var)."'), escape('".addSlashes($value)."'));";		
 	}
 	
 	/*
