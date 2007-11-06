@@ -81,11 +81,23 @@ class tx_wecflashpresentation extends tslib_pibase {
 		$bgcolor = $flashConf['bgcolor'];
 		$flashPath = $flashConf['flashPath'];
 		
+		/* Initialize values for FlashObject */
+		$jsPath = t3lib_extmgm::siteRelPath($this->extKey).'res/';
+		$name = 'wec_flashpresentation_'.$this->cObj->data['uid'];
+		$version = '7';
+
+		/* Create FlashObject class */		
+		$flashObjectClassName = t3lib_div::makeInstanceClassName('tx_wecflashpresentation_flashobject');
+		$flashObject = new $flashObjectClassName($flashPath, $name, $width, $height, $version, $bgcolor, $jsPath);
+		
 		unset($flashConf['userFunc']);
 		unset($flashConf['width']);
 		unset($flashConf['height']);
 		unset($flashConf['bgcolor']);
 		unset($flashConf['flashPath']);
+		
+		$flashObject->addParameter('wmode', $flashConf['wmode']);
+		unset($flashConf['wmode']);
 		
 		/* Combine FlexForm and TS values */
 		if($piFlexForm['data']) {
@@ -118,16 +130,7 @@ class tx_wecflashpresentation extends tslib_pibase {
 			$flashConf['baseurl'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
 		}
 		$flashConf['lastloaded'] = "true";
-		
-		/* Initialize values for FlashObject */
-		$jsPath = t3lib_extmgm::siteRelPath($this->extKey).'res/';
-		$name = 'wec_flashpresentation_'.$this->cObj->data['uid'];
-		$version = '7';
 
-		/* Create FlashObject class */		
-		$flashObjectClassName = t3lib_div::makeInstanceClassName('tx_wecflashpresentation_flashobject');
-		$flashObject = new $flashObjectClassName($flashPath, $name, $width, $height, $version, $bgcolor, $jsPath);				
-		
 		/* Add each FlashVar to FlashObject */
 		foreach($flashConf as $var => $value) {
 			$flashObject->addVariable($var, $value);	

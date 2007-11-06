@@ -77,6 +77,15 @@ class tx_wecflashpresentation_flashobject {
 	}
 	
 	/*
+	 * Adds a parameter to be passed to the Flash movie.
+	 * @param	string	The name of the parameter.
+	 * @param	string	The value of the parameter.
+	 */
+	function addParameter($var, $value) {
+		$this->flashObjectVariables[] = "fo.addParam(escape('".addslashes($var)."'), escape('".addSlashes($value)."'));";		
+	}
+	
+	/*
 	 * Sets the DOM ID that FlashObject will write to.
 	 * @param	string	 The ID to be replaced.
 	 */
