@@ -2,7 +2,7 @@
 /***************************************************************
 * Copyright notice
 *
-* (c) 2006 Foundation for Evangelism
+* (c) 2006-2008 Foundation for Evangelism
 * All rights reserved
 *
 * This file is part of the Web-Empowered Church (WEC)
@@ -81,70 +81,79 @@ class tx_wecflashpresentation extends tslib_pibase {
 		$bgcolor = $flashConf['bgcolor'];
 		$flashPath = $flashConf['flashPath'];
 		
-		/* Initialize values for FlashObject */
-		$jsPath = t3lib_extmgm::siteRelPath($this->extKey).'res/';
-		$name = 'wec_flashpresentation_'.$this->cObj->data['uid'];
-		$version = '7';
+		if($flashPath && (count($flashConf) > 0)) {
+			/* Initialize values for FlashObject */
+			$jsPath = t3lib_extmgm::siteRelPath($this->extKey).'res/';
+			$name = 'wec_flashpresentation_'.$this->cObj->data['uid'].'_'.rand();
+			
+			$version = '7';
 
-		/* Create FlashObject class */		
-		$flashObjectClassName = t3lib_div::makeInstanceClassName('tx_wecflashpresentation_flashobject');
-		$flashObject = new $flashObjectClassName($flashPath, $name, $width, $height, $version, $bgcolor, $jsPath);
+			/* Create FlashObject class */		
+			$flashObjectClassName = t3lib_div::makeInstanceClassName('tx_wecflashpresentation_flashobject');
+			$flashObject = new $flashObjectClassName($flashPath, $name, $width, $height, $version, $bgcolor, $jsPath);
 		
-		unset($flashConf['userFunc']);
-		unset($flashConf['width']);
-		unset($flashConf['height']);
-		unset($flashConf['bgcolor']);
-		unset($flashConf['flashPath']);
+			unset($flashConf['userFunc']);
+			unset($flashConf['width']);
+			unset($flashConf['height']);
+			unset($flashConf['bgcolor']);
+			unset($flashConf['flashPath']);
 		
-		$flashObject->addParameter('wmode', $flashConf['wmode']);
-		unset($flashConf['wmode']);
+			$flashObject->addParameter('wmode', $flashConf['wmode']);
+			unset($flashConf['wmode']);
 		
-		/* Combine FlexForm and TS values */
-		if($piFlexForm['data']) {
-			foreach($piFlexForm['data'] as $sheet => $data) {
-				foreach ($data as $lang => $value) {
-					foreach ($value as $key => $val) {
-						/* Skip over the slides field.  We'll perform special processing on this later */
-						//if ($key != "slides") {
+			/* Combine FlexForm and TS values */
+			if($piFlexForm['data']) {
+				foreach($piFlexForm['data'] as $sheet => $data) {
+					foreach ($data as $lang => $value) {
+						foreach ($value as $key => $val) {
 							$val = $this->pi_getFFvalue($piFlexForm, $key, $sheet);
 							/* If value exists in Flexform, overwrite existing Typoscript value or create new array entry */
 							if ($val != null) {
 								$flashConf[$key] = $val;
-							
+						
 								/* If bandwidth image comes from Flexform, set bwbase to uploads folder */
 								if ($key == "bwbase") {
 									$flashConf['bwbase'] = "uploads/tx_wecflashpresentation/";
 								}
-			
+		
 							}
-						//}	
+						}
 					}
 				}
 			}
-		}
 				
-		$flashConf = array_merge($flashConf, $this->splitSlidesAndTimes($flashConf['slides']));
-		unset($flashConf['slides']);
+			$flashConf = array_merge($flashConf, $this->splitSlidesAndTimes($flashConf['slides']));
+			unset($flashConf['slides']);
 		
-		if(!$flashConf['baseurl']) {
-			$flashConf['baseurl'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
-		}
-		$flashConf['lastloaded'] = "true";
+			if(!$flashConf['baseurl']) {
+				$flashConf['baseurl'] = t3lib_div::getIndpEnv('TYPO3_SITE_URL');
+			}
+			$flashConf['lastloaded'] = "true";
 
-		/* Add each FlashVar to FlashObject */
-		foreach($flashConf as $var => $value) {
-			$flashObject->addVariable($var, $value);	
+			/* Add each FlashVar to FlashObject */
+			foreach($flashConf as $var => $value) {
+				$flashObject->addVariable($var, $value);	
+			}
+		
+			/* Create the output */
+			$flashObject->outputHeader();
+			$html = '<div id="'.$name.'">'.$this->pi_getLL('alt_content').'</div>';
+		} else {
+			$GLOBALS['TSFE']->additionalHeaderData['tx_wecflashplayer_flashobject-error'] = '
+				<style type="text/css">
+					.error {
+						border:solid 1px #CC0000; 
+						background:#F7CBCA;
+						color:#CC0000;
+						font-weight:bold;
+						padding:4px;
+						text-align:center;	
+					}
+				</style>';
+			$html = '<div class="error">'.$this->pi_getLL('configuration_error').'</div>';
 		}
-		$flashObject->write($name);
-		
-		/* Create the output */
-		$html = '<div id="'.$name.'">You do not have the Flash plugin installed, or your browser does not support Javascript (you should enable it, perhaps?)</div>';
-		$javascript = $flashObject->output();	
 
-		return $this->pi_wrapInBaseClass($html.chr(10).$javascript);
-		
-		
-		return $this->pi_wrapInBaseClass($this->outputHTML($flashPath, $width, $height, $bgcolor, $flashVars));
+		return $this->pi_wrapInBaseClass($html);
 	}
 	
 	/*
