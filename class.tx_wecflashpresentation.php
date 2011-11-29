@@ -95,6 +95,7 @@ class tx_wecflashpresentation extends tslib_pibase {
 			unset($flashConf['height']);
 			unset($flashConf['bgcolor']);
 			unset($flashConf['flashPath']);
+			unset($flashConf['includeLibs']);
 
 			$flashObject->addParameter('wmode', $flashConf['wmode']);
 			unset($flashConf['wmode']);
